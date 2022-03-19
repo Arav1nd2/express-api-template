@@ -1,0 +1,42 @@
+version: "3.8"
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: "${DB_USERNAME}"
+      POSTGRES_PASSWORD: "${DB_PASSWORD}"
+      POSTGRES_DB: "${DB_NAME}"
+    ports:
+      - ${DB_PORT}:5432
+    volumes:
+      - ./db:/var/lib/postgresql/data
+  test-db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: "${DB_USERNAME}"
+      POSTGRES_PASSWORD: "${DB_PASSWORD}"
+      POSTGRES_DB: "${DB_NAME}"
+    ports:
+      - ${TEST_DB_PORT}:5432
+  sqlpad:
+    image: sqlpad/sqlpad
+    hostname: "sqlpad"
+    ports:
+      - 8888:3000
+    depends_on:
+      - db
+    environment:
+      SQLPAD_ADMIN: "admin@admin.com"
+      SQLPAD_ADMIN_PASSWORD: "admin"
+      SQLPAD_APP_LOG_LEVEL: debug
+      SQLPAD_WEB_LOG_LEVEL: warn
+      SQLPAD_CONNECTIONS__pgdemo__name: Postgres Data viewer
+      SQLPAD_CONNECTIONS__pgdemo__driver: postgres
+      SQLPAD_CONNECTIONS__pgdemo__host: db
+      SQLPAD_CONNECTIONS__pgdemo__database: "${DB_NAME}"
+      SQLPAD_CONNECTIONS__pgdemo__username: "${DB_USERNAME}"
+      SQLPAD_CONNECTIONS__pgdemo__password: "${DB_PASSWORD}"
+      SQLPAD_CONNECTIONS__pgdemo__multiStatementTransactionEnabled: "true"
+      SQLPAD_CONNECTIONS__pgdemo__idleTimeoutSeconds: 86400

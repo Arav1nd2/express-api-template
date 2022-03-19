@@ -1,0 +1,33 @@
+{
+  "name": "express-api-template",
+  "version": "1.0.0",
+  "description": "A starter template for building express APIs",
+  "main": "index.js",
+  "author": "Aravind Srinivasan",
+  "license": "MIT",
+  "scripts": {
+    "build": "babel index.js -d dist",
+    "start": "NODE_ENV=prod npm run build && node dist/index.js",
+    "dev": "NODE_ENV=dev nodemon --exec babel-node index.js",
+    "start-db": "docker-compose --env-file ./config/.env.dev up -d",
+    "kill-db": "docker-compose --env-file ./config/.env.dev down",
+    "clean-db": "rm -rf db/*",
+    "start-fresh-db": "yarn clean-db && yarn start-db",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.17.6",
+    "@babel/core": "^7.17.8",
+    "@babel/node": "^7.16.8",
+    "@babel/preset-env": "^7.16.11",
+    "jest": "^27.5.1",
+    "nodemon": "^2.0.15",
+    "supertest": "^6.2.2"
+  },
+  "dependencies": {
+    "custom-env": "^2.0.1",
+    "express": "^4.17.3",
+    "helmet": "^5.0.2",
+    "morgan": "^1.10.0"
+  }
+}
