@@ -1,7 +1,7 @@
-import app from "../src";
 import request from "supertest";
+import app from "../src";
 
-describe("E2E testing", function () {
+describe("E2E testing", () => {
   it("Tests the root endpoint", async () => {
     request(app)
       .get("/api")
